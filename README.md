@@ -1012,122 +1012,296 @@ Terdapat sebuah sorted array of strings yang mana terdapat string kosong diantar
     Program di atas adalah sebuah program C++ yang mengimplementasikan fungsi untuk mensortir sebuah stack, sehingga item dengan nilai terkecil menjadi top pada stack tersebut atau untuk mengurutkan isi dari sebuah stack. Pertama, program meminta pengguna untuk memasukkan data ke dalam stack. Kemudian, data yang dimasukkan akan ditampilkan sebagai "Stack awal". Selanjutnya, fungsi `sortStack` akan mengurutkan isi dari stack secara ascending, sehingga item dengan nilai terkecil akan berada di bagian atas stack. Setelah diurutkan, isi stack akan ditampilkan kembali sebagai "Stack setelah diurutkan". Algoritma pengurutan yang digunakan adalah algoritma sederhana yang menggunakan satu stack tambahan (`tempStack`) untuk menyimpan nilai-nilai sementara saat mengurutkan. 
 
 ### CPMK 2 - SubCPMK 7
-1.	Tulislah sebuah program dari operasi stack seperti pop, push, isEmpty, isFull, dll(min 5)! 
+1.	Tulislah sebuah program dari operasi queue seperti enqueue/add, dequeue/remove, isEmpty, isFull, dll(min 5)! 
 
     #### Source code:
     ```C++
     #include <iostream>
+    using namespace std;
+
+    #define MAX_SIZE 100 // Ukuran maksimum queue
+
+    class Queue {
+    private:
+        int front;
+        int rear;
+        int count;
+        int arr[MAX_SIZE];
+
+    public:
+        // Constructor
+        Queue() {
+            front = 0;
+            rear = -1;
+            count = 0;
+        }
+
+        // Fungsi untuk menambahkan elemen ke dalam queue (enqueue)
+        void enqueue(int data) {
+            if (isFull()) {
+                cout << "Queue penuh!" << endl;
+                return;
+            }
+            rear = (rear + 1) % MAX_SIZE;
+            arr[rear] = data;
+            count++;
+        }
+
+        // Fungsi untuk menghapus elemen dari queue (dequeue)
+        int dequeue() {
+            if (isEmpty()) {
+                cout << "Queue kosong!" << endl;
+                return -1;
+            }
+            int data = arr[front];
+            front = (front + 1) % MAX_SIZE;
+            count--;
+            return data;
+        }
+
+        // Fungsi untuk memeriksa apakah queue kosong
+        bool isEmpty() {
+            return count == 0;
+        }
+
+        // Fungsi untuk memeriksa apakah queue penuh
+        bool isFull() {
+            return count == MAX_SIZE;
+        }
+
+        // Fungsi untuk mendapatkan ukuran queue
+        int size() {
+            return count;
+        }
+
+        // Fungsi untuk melihat elemen di depan queue tanpa menghapusnya (peek)
+        int peek() {
+            if (isEmpty()) {
+                cout << "Queue kosong!" << endl;
+                return -1;
+            }
+            return arr[front];
+        }
+
+        // Fungsi untuk menampilkan elemen-elemen dalam queue
+        void display() {
+            if (isEmpty()) {
+                cout << "Queue kosong!" << endl;
+                return;
+            }
+            cout << "Queue: ";
+            for (int i = 0; i < count; i++) {
+                cout << arr[(front + i) % MAX_SIZE] << " ";
+            }
+            cout << endl;
+        }
+    };
+
+    int main() {
+        Queue q;
+        int choice, data;
+
+        while (true) {
+            cout << "\nMenu Operasi Queue:" << endl;
+            cout << "1. Tambah (Enqueue)" << endl;
+            cout << "2. Hapus (Dequeue)" << endl;
+            cout << "3. Lihat Elemen Depan (Peek)" << endl;
+            cout << "4. Periksa Apakah Queue Kosong" << endl;
+            cout << "5. Periksa Apakah Queue Penuh" << endl;
+            cout << "6. Lihat Ukuran Queue" << endl;
+            cout << "7. Tampilkan Queue" << endl;
+            cout << "0. Keluar" << endl;
+            cout << "Masukkan pilihan Anda: ";
+            cin >> choice;
+
+            switch (choice) {
+                case 1:
+                    cout << "Masukkan data yang ingin ditambahkan: ";
+                    cin >> data;
+                    q.enqueue(data);
+                    break;
+
+                case 2:
+                    data = q.dequeue();
+                    if (data != -1) {
+                        cout << "Elemen yang dihapus: " << data << endl;
+                    }
+                    break;
+
+                case 3:
+                    data = q.peek();
+                    if (data != -1) {
+                        cout << "Elemen di depan: " << data << endl;
+                    }
+                    break;
+
+                case 4:
+                    if (q.isEmpty()) {
+                        cout << "Queue kosong!" << endl;
+                    } else {
+                        cout << "Queue tidak kosong." << endl;
+                    }
+                    break;
+
+                case 5:
+                    if (q.isFull()) {
+                        cout << "Queue penuh!" << endl;
+                    } else {
+                        cout << "Queue tidak penuh." << endl;
+                    }
+                    break;
+
+                case 6:
+                    cout << "Ukuran queue: " << q.size() << endl;
+                    break;
+
+                case 7:
+                    q.display();
+                    break;
+
+                case 0:
+                    exit(0);
+
+                default:
+                    cout << "Pilihan tidak valid!" << endl;
+            }
+        }
+
+        return 0;
+    }
+    ```
+
+    #### Output
+
+    ![image](https://github.com/rennanvra/Praktikum-Algoritma-dan-Strukdat/assets/162097323/551f8ee0-3e1f-48ae-8067-094c0cab1009)
+
+    #### Interpretasi
+
+    Program di atas mengimplementasikan operasi dasar pada queue menggunakan array dalam C++. Queue memiliki ukuran maksimum yang ditentukan oleh `MAX_SIZE`. Kelas `Queue` memiliki metode untuk menambahkan elemen ke dalam queue (`enqueue`), menghapus elemen dari queue (`dequeue`), memeriksa apakah queue kosong (`isEmpty`), memeriksa apakah queue penuh (`isFull`), mendapatkan ukuran queue (`size`), melihat elemen di depan tanpa menghapusnya (`peek`), dan menampilkan semua elemen dalam queue (`display`). Program ini juga menyediakan antarmuka menu interaktif yang memungkinkan pengguna untuk melakukan operasi-operasi tersebut pada queue hingga mereka memilih untuk keluar.
+
+2.  Sebuah selter hewan terlantar, yang mana hanya menerima kucing dan anjing, menerapkan konsep “first in, first out” dalam proses adopsi. Orang-orang yang hendak mengadopsi harus mengikuti aturan berikut: 1) mengadopsi hewan yang paling “tua” (berdasarkan waktu masuk ke selter) dan tidak dapat memilih kucing atau anjing; 2) memilih antara kucing atau anjing, namun akan menerima yang paling tua. Buatlah data struktur untuk mengimplementasikan kondisi tersebut, silahkan menggunakan beberapa operasi queue seperti enquee, dequeueAny, dequeueDog, dan dequeueCat.   
+
+    #### Source code:
+    ```C++
+    #include <iostream>
+    #include <queue>
 
     using namespace std;
 
-    #define MAX_SIZE 100 // Ukuran maksimum stack
-
-    struct Node {
-    int data;
-    Node* next;
+    struct Animal {
+    string type; // "cat" atau "dog"
+    string name;
+    int timestamp;
     };
 
-    Node* top = NULL; // Pointer ke node teratas stack
+    // Deklarasi queue untuk kucing dan anjing
+    queue<Animal> catQueue;
+    queue<Animal> dogQueue;
 
-    // Fungsi untuk memeriksa apakah stack kosong
-    bool isEmpty() {
-    return top == NULL;
+    void enqueue(string type, string name, int timestamp) {
+    if (type == "cat") {
+        catQueue.push({type, name, timestamp});
+    } else if (type == "dog") {
+        dogQueue.push({type, name, timestamp});
+    } else {
+        cout << "Tipe hewan tidak valid!" << endl;
+    }
     }
 
-    // Fungsi untuk memeriksa apakah stack penuh
-    bool isFull() {
-    return top != NULL && top->next == NULL;
+    Animal dequeueAny() {
+    if (catQueue.empty() && dogQueue.empty()) {
+        cout << "Queue hewan kosong!" << endl;
+        return {"", "", -1}; // Animal kosong
     }
 
-    // Fungsi untuk menambahkan elemen ke stack
-    void push(int data) {
-    if (isFull()) {
-        cout << "Stack penuh!" << endl;
-        return;
+    Animal nextAnimal;
+    if (!catQueue.empty() && !dogQueue.empty()) {
+        nextAnimal = (catQueue.front().timestamp <= dogQueue.front().timestamp) ? catQueue.front() : dogQueue.front();
+    } else if (!catQueue.empty()) {
+        nextAnimal = catQueue.front();
+    } else {
+        nextAnimal = dogQueue.front();
     }
 
-    Node* newNode = new Node;
-    newNode->data = data;
-    newNode->next = top;
-    top = newNode;
+    if (nextAnimal.type == "cat") {
+        catQueue.pop();
+    } else {
+        dogQueue.pop();
     }
 
-    // Fungsi untuk mengambil elemen teratas dari stack
-    int pop() {
-    if (isEmpty()) {
-        cout << "Stack kosong!" << endl;
-        return -1;
+    return nextAnimal;
     }
 
-    int topData = top->data;
-    Node* temp = top;
-    top = top->next;
-    delete temp; // Menghapus node yang dipop
-    return topData;
+    Animal dequeueDog() {
+    if (dogQueue.empty()) {
+        cout << "Queue anjing kosong!" << endl;
+        return {"", "", -1}; // Animal kosong
     }
 
-    // Fungsi untuk melihat elemen teratas tanpa menghapusnya
-    int peek() {
-    if (isEmpty()) {
-        cout << "Stack kosong!" << endl;
-        return -1;
+    Animal dog = dogQueue.front();
+    dogQueue.pop();
+    return dog;
     }
 
-    return top->data;
+    Animal dequeueCat() {
+    if (catQueue.empty()) {
+        cout << "Queue kucing kosong!" << endl;
+        return {"", "", -1}; // Animal kosong
+    }
+
+    Animal cat = catQueue.front();
+    catQueue.pop();
+    return cat;
     }
 
     int main() {
-    int choice, data;
+    int choice, timestamp;
+    string type, name;
 
     while (true) {
-        cout << "\nMenu Operasi Stack:" << endl;
-        cout << "1. Tambah" << endl;
-        cout << "2. Hapus" << endl;
-        cout << "3. Lihat" << endl;
-        cout << "4. Periksa Apakah Stack Kosong" << endl;
-        cout << "5. Periksa Apakah Stack Penuh" << endl;
+        cout << "\nMenu Shelter Hewan:" << endl;
+        cout << "1. Tambahkan hewan baru" << endl;
+        cout << "2. Adopsi hewan tertua (apapun)" << endl;
+        cout << "3. Adopsi anjing tertua" << endl;
+        cout << "4. Adopsi kucing tertua" << endl;
         cout << "0. Keluar" << endl;
         cout << "Masukkan pilihan Anda: ";
         cin >> choice;
 
-        cin.ignore(); // Membersihkan buffer stdin
-
         switch (choice) {
         case 1:
-            cout << "Masukkan data yang ingin dipush: ";
-            cin >> data;
-            push(data);
+            cout << "Masukkan tipe hewan (cat/dog): ";
+            cin >> type;
+            cout << "Masukkan nama hewan: ";
+            cin >> name;
+            cout << "Masukkan timestamp masuk (angka): ";
+            cin >> timestamp;
+            enqueue(type, name, timestamp);
             break;
 
-        case 2:
-            data = pop();
-            if (data != -1) {
-            cout << "Elemen yang dipop: " << data << endl;
+        case 2: {
+            Animal adoptedAnimal = dequeueAny();
+            if (adoptedAnimal.type != "") {
+            cout << "Hewan yang diadopsi: " << adoptedAnimal.type << " - " << adoptedAnimal.name << endl;
             }
             break;
+        }
 
-        case 3:
-            data = peek();
-            if (data != -1) {
-            cout << "Elemen teratas: " << data << endl;
+        case 3: {
+            Animal adoptedDog = dequeueDog();
+            if (adoptedDog.type != "") {
+            cout << "Anjing yang diadopsi: " << adoptedDog.name << endl;
             }
             break;
+        }
 
-        case 4:
-            if (isEmpty()) {
-            cout << "Stack kosong!" << endl;
-            } else {
-            cout << "Stack tidak kosong." << endl;
+        case 4: {
+            Animal adoptedCat = dequeueCat();
+            if (adoptedCat.type != "") {
+            cout << "Kucing yang diadopsi: " << adoptedCat.name << endl;
             }
             break;
-
-        case 5:
-            if (isFull()) {
-            cout << "Stack penuh!" << endl;
-            } else {
-            cout << "Stack tidak penuh." << endl;
-            }
-            break;
+        }
 
         case 0:
             exit(0);
@@ -1143,77 +1317,8 @@ Terdapat sebuah sorted array of strings yang mana terdapat string kosong diantar
 
     #### Output
 
-    ![image](https://github.com/rennanvra/Praktikum-7/assets/162097323/86a5e679-d3fa-4d25-a557-f75f18645131)
+    ![image](https://github.com/rennanvra/Algoritma-dan-Struktur-Data/assets/162097323/751cb60c-c26b-4543-921c-3c399f730d38)
 
     #### Interpretasi
 
-    Program di atas adalah implementasi dari operasi dasar pada struktur data stack dalam bahasa C++. Stack adalah struktur data yang mengikuti prinsip LIFO (Last In, First Out), di mana elemen terakhir yang dimasukkan akan menjadi yang pertama dikeluarkan. Program ini menyediakan operasi push untuk menambahkan elemen baru ke dalam stack, pop untuk menghapus dan mengembalikan elemen teratas, serta peek untuk melihat elemen teratas tanpa menghapusnya. Selain itu, program juga memiliki fungsi isEmpty untuk memeriksa apakah stack kosong, dan isFull untuk memeriksa apakah stack penuh sebelum operasi push dilakukan. Implementasi stack menggunakan struktur data linked list, di mana setiap elemen stack direpresentasikan sebagai node yang terhubung satu sama lain. Setiap operasi dilengkapi dengan pengecekan kondisi untuk memastikan operasi dilakukan dengan benar sesuai aturan stack.
-
-2.	Tulislah sebuah program untuk mensortir sebuah stack, sehingga item dengan nilai terkecil menjadi top pada stack tersebut! Diperbolehkan menggunakan tambahan temporary stack, namun tidak diperbolehkan untuk menyalin dari struktur data yang lain seperti array.  Program stack yang dibuat dapat menggunakan operasi stack seperti push, pop, peek, dan isEmpty.  
-
-    #### Source code:
-    ```C++
-    #include <iostream>
-    #include <stack>
-
-    using namespace std;
-
-    // Fungsi untuk mengurutkan stack
-    void sortStack(stack<int>& s) {
-        stack<int> tempStack; // Stack sementara untuk membantu pengurutan
-
-        while (!s.empty()) {
-            int topValue = s.top();
-            s.pop();
-
-            while (!tempStack.empty() && tempStack.top() > topValue) {
-                s.push(tempStack.top());
-                tempStack.pop();
-            }
-
-            tempStack.push(topValue);
-        }
-
-        // Pindahkan isi tempStack ke stack asli
-        while (!tempStack.empty()) {
-            s.push(tempStack.top());
-            tempStack.pop();
-        }
-    }
-
-    int main() {
-        stack<int> s;
-
-        // Masukkan data ke stack
-        int data;
-        cout << "Masukkan data (-1 untuk berhenti): ";
-        while (cin >> data && data != -1) {
-            s.push(data);
-        }
-
-        cout << "\nStack awal: ";
-        stack<int> originalStack = s; // Salin stack untuk ditampilkan
-        while (!originalStack.empty()) {
-            cout << originalStack.top() << " ";
-            originalStack.pop();
-        }
-
-        sortStack(s); // Mengurutkan stack
-
-        cout << "\nStack setelah diurutkan: ";
-        while (!s.empty()) {
-            cout << s.top() << " ";
-            s.pop();
-        }
-
-        return 0;
-    }
-    ```
-
-    #### Output
-
-    ![Screenshot 2024-05-14 232010](https://github.com/rennanvra/Praktikum-7/assets/162097323/ae6f9df1-eb76-4d4b-8033-d6f9fd2c9fc0)
-
-    #### Interpretasi
-
-    Program di atas adalah sebuah program C++ yang mengimplementasikan fungsi untuk mensortir sebuah stack, sehingga item dengan nilai terkecil menjadi top pada stack tersebut atau untuk mengurutkan isi dari sebuah stack. Pertama, program meminta pengguna untuk memasukkan data ke dalam stack. Kemudian, data yang dimasukkan akan ditampilkan sebagai "Stack awal". Selanjutnya, fungsi `sortStack` akan mengurutkan isi dari stack secara ascending, sehingga item dengan nilai terkecil akan berada di bagian atas stack. Setelah diurutkan, isi stack akan ditampilkan kembali sebagai "Stack setelah diurutkan". Algoritma pengurutan yang digunakan adalah algoritma sederhana yang menggunakan satu stack tambahan (`tempStack`) untuk menyimpan nilai-nilai sementara saat mengurutkan.
+    Program ini mengimplementasikan sistem antrian untuk sebuah shelter hewan yang hanya menerima kucing dan anjing. Program ini menggunakan dua antrian (queue) terpisah untuk menyimpan kucing dan anjing. Fungsi `enqueue` menambahkan hewan ke antrian yang sesuai berdasarkan jenisnya dan waktu masuk (timestamp). Fungsi `dequeueAny` mengadopsi hewan tertua dari kedua antrian, sementara fungsi `dequeueDog` dan `dequeueCat` mengadopsi anjing atau kucing tertua dari antrian masing-masing. Program ini menyediakan menu interaktif untuk pengguna, yang memungkinkan mereka untuk menambahkan hewan baru atau mengadopsi hewan sesuai aturan yang ditetapkan.
