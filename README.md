@@ -1005,7 +1005,7 @@ Terdapat sebuah sorted array of strings yang mana terdapat string kosong diantar
 
     #### Output
 
-    ![Screenshot 2024-05-14 232010](https://github.com/rennanvra/Praktikum-7/assets/162097323/ae6f9df1-eb76-4d4b-8033-d6f9fd2c9fc0)
+    ![image](https://github.com/rennanvra/Algoritma-dan-Struktur-Data/assets/162097323/cfac5be5-6ad2-4c7d-a50f-6b9060b85438)
 
     #### Interpretasi
 
